@@ -1,8 +1,10 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:jayecommerce/screen/home_screen.dart';
-import 'package:jayecommerce/state/state.dart';
+import 'package:jayecommerce/config/app_setting.dart';
+import 'package:jayecommerce/presentation/screen/home_screen.dart';
+import 'package:jayecommerce/core/redux/state/state.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:redux/redux.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -17,16 +19,18 @@ class SplashScreen extends StatelessWidget {
           home: AnimatedSplashScreen(
               duration: 1500,
               splash: Icon(
-                Icons.temple_buddhist,
-                color: Colors.white,
+                MdiIcons.cart,
+                color: AppSetting.AnimatedSplashScreen_Splash_Color(),
                 size: 150,
               ),
               nextScreen: HomeScreen(),
               splashTransition: SplashTransition.fadeTransition,
-              backgroundColor: Colors.orange),
+              backgroundColor:
+                  AppSetting.AnimatedSplashScree_BackgroundColor()),
           theme: ThemeData(
-              primaryColor: Colors.orange,
-              appBarTheme: AppBarTheme(color: Colors.orange)),
+              primaryColor: AppSetting.ThemeData_PrimaryColor(),
+              appBarTheme:
+                  AppBarTheme(color: AppSetting.ThemeData_appBarTheme())),
         ));
   }
 }

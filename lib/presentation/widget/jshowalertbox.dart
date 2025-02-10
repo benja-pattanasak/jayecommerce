@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class JShowAlertBox {
-  showError(context, String errorMessage) {
+  static showError(context, String errorMessage) {
     return showDialog(
         context: context,
         barrierDismissible: true,
@@ -45,7 +45,8 @@ class JShowAlertBox {
         });
   }
 
-  showErrorWithHead(context, String errorMessage, String headErrorMessage) {
+  static showErrorWithHead(
+      context, String errorMessage, String headErrorMessage) {
     return showDialog(
         context: context,
         barrierDismissible: true,
@@ -89,7 +90,7 @@ class JShowAlertBox {
         });
   }
 
-  showErrorWithAddErrorWidgert(
+  static showErrorWithAddErrorWidgert(
       context, List<Widget> listWidgetErrorMessage, String headErrorMessage) {
     return showDialog(
         context: context,

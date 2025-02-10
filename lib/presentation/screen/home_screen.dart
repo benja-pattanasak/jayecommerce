@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jayecommerce/presentation/screen/productlist_screen.dart';
+import 'package:jayecommerce/presentation/screen/test_screen.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -9,7 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final screens = [];
+  final screens = [TestScreen(), ProductlistScreen()];
   int currentIndex = 0;
   @override
   dispose() {
@@ -37,7 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               label: 'ยังไม่รับกิจนิมนต์'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.accessibility_sharp), label: 'รับกิจนิมนต์แล้ว'),
+              icon: Icon(
+                MdiIcons.badminton,
+              ),
+              label: 'ยังไม่รับกิจนิมนต์'),
         ],
       ),
     );

@@ -1,5 +1,5 @@
-// import 'package:kitnimon/action/action.dart';
-// import 'package:kitnimon/state/state.dart';
+import 'package:jayecommerce/core/redux/action/gettoken_action.dart';
+import 'package:jayecommerce/core/redux/state/state.dart';
 
 // KitnimonState KitnimonReducer(KitnimonState state, dynamic action) {
 //   if (action is KitnimonChangeValue) {
@@ -45,22 +45,12 @@
 //   return state;
 // }
 
-// KitnimonSearchState KitnimonSearchReducer(
-//     KitnimonSearchState state, dynamic action) {
-//   if (action is KitnimonSearch) {
-//     return state.setValue(
-//       startDate: action.startDate == DateTime.fromMillisecondsSinceEpoch(0)
-//           ? state.startDate
-//           : action.startDate,
-//       endDate: action.endDate == DateTime.fromMillisecondsSinceEpoch(0)
-//           ? state.endDate
-//           : action.endDate,
-//     );
-//   }
-//   return state;
-// }
-
-import 'package:jayecommerce/state/state.dart';
+TokenState StateReducer(TokenState state, dynamic action) {
+  if (action is GetTokenAction) {
+    return state.setValue(token: state.token);
+  }
+  return state;
+}
 
 AppState appReducer(AppState state, dynamic action) {
   return AppState();

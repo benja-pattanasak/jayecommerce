@@ -1,19 +1,12 @@
 // import 'package:kitnimon/model/kitnimon_model.dart';
 
-// class KitnimonSearchState {
-//   DateTime? startDate;
-//   DateTime? endDate;
-//   KitnimonSearchState({this.startDate, this.endDate});
-//   KitnimonSearchState setValue({
-//     DateTime? startDate,
-//     DateTime? endDate,
-//   }) {
-//     return KitnimonSearchState(
-//       startDate: startDate ?? this.startDate,
-//       endDate: endDate ?? this.endDate,
-//     );
-//   }
-// }
+class TokenState {
+  String? token;
+  TokenState({this.token});
+  TokenState setValue({String? token}) {
+    return TokenState(token: token ?? this.token);
+  }
+}
 
 // class KitnimonState {
 //   int? id;

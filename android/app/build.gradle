@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+    compileSdk 34
     namespace = "com.example.jayecommerce"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
