@@ -27,6 +27,10 @@ class AppSetting {
   }
 
   static BaseUrl() {
-    return "";
+    return "http://10.0.2.2";
+  }
+
+  static pageSize() {
+    return 2;
   }
 }

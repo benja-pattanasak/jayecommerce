@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jayecommerce/config/app_asset.dart';
+import 'package:jayecommerce/config/app_setting.dart';
 import 'package:jayecommerce/config/app_space.dart';
 import 'package:jayecommerce/core/redux/state/state.dart';
+import 'package:jayecommerce/data/model/pagingrequest_model.dart';
 import 'package:jayecommerce/data/model/product_model.dart';
 import 'package:jayecommerce/data/repository/product_repository.dart';
 import 'package:jayecommerce/presentation/widget/productlist_widget.dart';
@@ -18,20 +20,22 @@ class ProductlistScreen extends StatefulWidget {
 class _ProductlistScreenState extends State<ProductlistScreen> {
   ScrollController _scrollController = ScrollController();
   bool isLoading = false;
-  int page = 1;
+  int pageNumber = 1;
   List<ProductModel> listProduct = [];
   @override
   void initState() {
     super.initState();
-    ProductRepository productRepository = ProductRepository();
-    productRepository.getListByID("", "");
-
-    for (int i = 1; i <= 10; i++) {
-      ProductModel productModel = ProductModel();
-      productModel.productName = i.toString();
-      listProduct.add(productModel);
-    }
+    _LoadData();
     _scrollController.addListener(_scrollListener);
+  }
+
+  Future<List<ProductModel>> _LoadData() async {
+    ProductRepository productRepository = ProductRepository();
+    listProduct = await productRepository.getListByID(
+        "",
+        PagingRequestModel(
+            id: 0, pageNumber: pageNumber, pageSize: AppSetting.pageSize()));
+    return listProduct;
   }
 
   void _scrollListener() {
@@ -42,16 +46,16 @@ class _ProductlistScreenState extends State<ProductlistScreen> {
   }
 
   Future<void> _loadMore() async {
-    page++;
+    pageNumber++;
+    var listProductAdd = await _LoadData();
+
     if (isLoading) return;
     setState(() => isLoading = true);
 
     setState(() {
-      for (int i = 1; i <= 10; i++) {
-        ProductModel productModel = ProductModel();
-        productModel.productName = i.toString();
-        listProduct.add(productModel);
-      }
+      listProductAdd.forEach((product) {
+        listProduct.add(product);
+      });
       isLoading = false;
     });
   }
