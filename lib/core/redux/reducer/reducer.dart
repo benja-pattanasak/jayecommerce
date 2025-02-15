@@ -1,4 +1,4 @@
-import 'package:jayecommerce/core/redux/action/gettoken_action.dart';
+import 'package:jayecommerce/core/redux/action/action.dart';
 import 'package:jayecommerce/core/redux/state/state.dart';
 
 // KitnimonState KitnimonReducer(KitnimonState state, dynamic action) {
@@ -45,13 +45,22 @@ import 'package:jayecommerce/core/redux/state/state.dart';
 //   return state;
 // }
 
-TokenState StateReducer(TokenState state, dynamic action) {
+TokenState TokenReducer(TokenState state, dynamic action) {
   if (action is GetTokenAction) {
     return state.setValue(token: state.token);
   }
   return state;
 }
 
+ProductListState ProductListReducer(ProductListState state, dynamic action) {
+  if (action is ProductListChangeValue) {
+    return state.setValue(listProductModel: state.listProductModel);
+  }
+  return state;
+}
+
 AppState appReducer(AppState state, dynamic action) {
-  return AppState();
+  return AppState(
+      productListState: ProductListReducer(state.productListState, action),
+      tokenState: TokenReducer(state.tokenState, action));
 }

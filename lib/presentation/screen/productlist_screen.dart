@@ -4,9 +4,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:jayecommerce/config/app_asset.dart';
 import 'package:jayecommerce/config/app_setting.dart';
 import 'package:jayecommerce/config/app_space.dart';
+import 'package:jayecommerce/core/helper/apiresponse.dart';
+import 'package:jayecommerce/core/redux/action/action.dart';
 import 'package:jayecommerce/core/redux/state/state.dart';
+import 'package:jayecommerce/data/model/Login_model.dart';
+import 'package:jayecommerce/data/model/authenticateuser_model.dart';
 import 'package:jayecommerce/data/model/pagingrequest_model.dart';
 import 'package:jayecommerce/data/model/product_model.dart';
+import 'package:jayecommerce/data/repository/login_repository.dart';
 import 'package:jayecommerce/data/repository/product_repository.dart';
 import 'package:jayecommerce/presentation/widget/productlist_widget.dart';
 
@@ -21,21 +26,55 @@ class _ProductlistScreenState extends State<ProductlistScreen> {
   ScrollController _scrollController = ScrollController();
   bool isLoading = false;
   int pageNumber = 1;
-  List<ProductModel> listProduct = [];
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
-    _LoadData();
-    _scrollController.addListener(_scrollListener);
+    _LoadDataState();
+
+    _login();
   }
 
-  Future<List<ProductModel>> _LoadData() async {
+  Future<void> _login() async {
+    LoginModel loginModel = LoginModel();
+    loginModel.email = "lifeisprogrammer@gmail.com";
+    loginModel.password = "123456";
+    ApiResponse<AuthenticateUserModel> authen =
+        await LoginRepository().login(loginModel);
+    var token = authen.data.accessToken;
+  }
+
+  Future<List<ProductModel>> _LoadDataNotState() async {
     ProductRepository productRepository = ProductRepository();
-    listProduct = await productRepository.getListByID(
-        "",
-        PagingRequestModel(
-            id: 0, pageNumber: pageNumber, pageSize: AppSetting.pageSize()));
-    return listProduct;
+    ApiResponse<List<ProductModel>> apiResponse =
+        await productRepository.getListByID(
+            "",
+            PagingRequestModel(
+                id: 0,
+                pageNumber: pageNumber,
+                pageSize: AppSetting.pageSize()));
+
+    return apiResponse.data;
+  }
+
+  Future<List<ProductModel>> _LoadDataState() async {
+    ProductRepository productRepository = ProductRepository();
+    ApiResponse<List<ProductModel>> apiResponse =
+        await productRepository.getListByID(
+            "",
+            PagingRequestModel(
+                id: 0,
+                pageNumber: pageNumber,
+                pageSize: AppSetting.pageSize()));
+    final store = StoreProvider.of<AppState>(context);
+    store.dispatch(ProductListChangeValue(listProductModel: apiResponse.data));
+    _scrollController.addListener(_scrollListener);
+    return apiResponse.data;
   }
 
   void _scrollListener() {
@@ -47,21 +86,25 @@ class _ProductlistScreenState extends State<ProductlistScreen> {
 
   Future<void> _loadMore() async {
     pageNumber++;
-    var listProductAdd = await _LoadData();
+    var listProductAdd = await _LoadDataNotState();
 
     if (isLoading) return;
     setState(() => isLoading = true);
 
-    setState(() {
-      listProductAdd.forEach((product) {
-        listProduct.add(product);
-      });
-      isLoading = false;
+    final store = StoreProvider.of<AppState>(context);
+    listProductAdd.forEach((product) {
+      store.state.productListState.listProductModel.add(product);
     });
+    store.dispatch(ProductListChangeValue(
+        listProductModel: store.state.productListState.listProductModel));
+    isLoading = false;
   }
 
   @override
   Widget build(BuildContext context) {
+    final store = StoreProvider.of<AppState>(context);
+    List<ProductModel> listProduct =
+        store.state.productListState.listProductModel;
     return StoreConnector<AppState, ProductModel>(
       converter: (store) => ProductModel(),
       builder: (context, vm) {

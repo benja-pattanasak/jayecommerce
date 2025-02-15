@@ -5,6 +5,9 @@ import 'package:jayecommerce/core/redux/state/state.dart';
 import 'package:redux/redux.dart';
 
 void main() {
-  final store = Store<AppState>(appReducer, initialState: AppState());
+  final store = Store<AppState>(appReducer,
+      initialState: AppState(
+          productListState: ProductListState(listProductModel: []),
+          tokenState: TokenState(token: "")));
   runApp(SplashScreen(store: store));
 }

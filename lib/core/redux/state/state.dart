@@ -1,5 +1,7 @@
 // import 'package:kitnimon/model/kitnimon_model.dart';
 
+import 'package:jayecommerce/data/model/product_model.dart';
+
 class TokenState {
   String? token;
   TokenState({this.token});
@@ -8,6 +10,14 @@ class TokenState {
   }
 }
 
+class ProductListState {
+  List<ProductModel> listProductModel;
+  ProductListState({this.listProductModel = const []});
+  ProductListState setValue({List<ProductModel>? listProductModel}) {
+    return ProductListState(
+        listProductModel: listProductModel ?? this.listProductModel);
+  }
+}
 // class KitnimonState {
 //   int? id;
 //   DateTime? date;
@@ -74,7 +84,7 @@ class TokenState {
 //   AppState({required this.kitnimonState, required this.kitnimonSearchState});
 // }
 class AppState {
-//   final KitnimonState kitnimonState;
-//   final KitnimonSearchState kitnimonSearchState;
-  AppState();
+  final ProductListState productListState;
+  final TokenState tokenState;
+  AppState({required this.productListState, required this.tokenState});
 }

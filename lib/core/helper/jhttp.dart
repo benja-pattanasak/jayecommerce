@@ -9,9 +9,11 @@ class Jhttp {
     return await http.post(Uri.parse(AppSetting.BaseUrl() + apiUrl),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
+          //'Authorization': 'Bearer $token',
         },
-        body: jsonEncode(body));
+        //body: jsonEncode('{}'));
+        body: json.encode({}) //'{}'
+        );
   }
 
   static Future<http.Response> get(String apiUrl, String token) async {
